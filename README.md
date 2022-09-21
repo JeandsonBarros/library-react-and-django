@@ -1,20 +1,5 @@
-        [sg.Text("Titulo:"), sg.Input(key="titulo")],
-        [sg.Text("Sinopse:"), sg.Input(key="sinopse")],
-        [sg.Text("Autor:"), sg.Input(key="autor")],
-        [sg.Text("isbn:"), sg.Input(key="isbn")],
+# About Library Management
 
-urlLivros="https://sd-books.herokuapp.com/livro/"
-urlClientes="https://sd-books.herokuapp.com/cliente/"
-urlEmprestimos="https://sd-books.herokuapp.com/emprestimo/"
+## Description
 
-`python -m venv venv`
-`venv\Scripts\activate`
-`pip install Django`
-`django-admin startproject django_project .`
-`python manage.py startapp app_exemplo`
-`python manage.py runserver`
-`python manage.py makemigrations`
-`python manage.py migrate`
-`pip freeze > requirements.txt`
-`pip install -r requirements.txt`
-`python manage.py createsuperuser`
+Web application developed with React JS and Django REST framework for library management.

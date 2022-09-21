@@ -5,3 +5,4 @@ class Book(models.Model):
     synopsis = models.CharField(max_length=250)
     author = models.CharField(max_length=250)
     isbn = models.IntegerField()
+    image = models.ImageField(upload_to='images', blank=True)

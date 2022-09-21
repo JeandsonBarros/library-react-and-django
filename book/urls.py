@@ -2,6 +2,7 @@ from django.urls import path
 import book.views as views 
 from rest_framework.routers import DefaultRouter
 
+
 router = DefaultRouter()
 router.register(r'', views.ViewsetsBooK)
 urlpatterns = router.urls
