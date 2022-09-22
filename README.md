@@ -8,7 +8,7 @@ Web application developed with React JS and Django REST framework for library ma
 
 
 
-The website has the following features:<br />
+The API has the following features:<br />
 [1. Authentication.](#1-authentication)<br />
 [2. Book Management](#2-book-management)<br />
 [3. Client Management](#3-cleint-management)<br />
