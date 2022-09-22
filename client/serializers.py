@@ -4,4 +4,4 @@ from rest_framework import serializers
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
-        fields = ('__all__')
+        fields = ['id', 'CPF', 'name', 'birthDate', 'profession', 'address', 'telephone']

@@ -177,5 +177,6 @@ SWAGGER_SETTINGS = {
             'in': 'header'
       }
    },
-   'LOGIN_URL': ('/auth/login/')
+   'LOGIN_URL': ('/auth/login/'),
+    
 }

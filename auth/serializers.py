@@ -75,7 +75,7 @@ class UserSerializer(serializers.ModelSerializer):
     
     """ Ao enviar uma solicitação PUT ou PATCH para registrar o endpoint,
     ele chama o método update do UserSerializer
-    que salva o objeto do usuário. """
+    que edita o objeto do usuário. """
     def update(self, instance, validated_data):
 
         password = validated_data.pop('password', None)
