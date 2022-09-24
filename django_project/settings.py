@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'loan',
     'client',
     'drf_yasg',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +56,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+#https://www.geeksforgeeks.org/how-to-enable-cors-headers-in-your-django-project/
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'django_project.urls'
 

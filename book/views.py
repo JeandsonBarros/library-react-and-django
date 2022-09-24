@@ -45,11 +45,13 @@ class BaseViewBooKListAndCreate(APIView, LimitOffsetPagination):
                 synopsis = booksSerializer.data['synopsis'],
                 author = booksSerializer.data['author'],
                 isbn = booksSerializer.data['isbn'],
-                user = request.user
+                user = request.user,
+                image = request.data['image'] 
             )
 
-            if request.data['image']:
-                book.image = request.data['image']
+            """ if request.data['image']:
+                book.image = request.data['image'] 
+            """
 
             book.save()
             return Response(booksSerializer.data, status=status.HTTP_201_CREATED)
