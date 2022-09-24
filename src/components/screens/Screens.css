@@ -1,0 +1,75 @@
+.loginBox {
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 10px;
+
+    border-radius: 10px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+   
+
+}
+
+.welcome {
+    background-image: url('../imgs/library-1.jpeg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;    
+    display: inline;
+    max-width: 300px;
+
+    border-radius: 10px 0 0 10px;
+
+}
+
+.welcome > div {
+    
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(5px);
+    height: 100%;
+    padding: 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    color: '#fff'
+    
+}
+
+.formLogin {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    justify-content: center;
+    padding: 10px;
+
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 0 10px 10px 0;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    
+}
+
+@media only screen and (max-width: 600px) {
+    .formLogin {
+        border-radius: 0 0 10px 10px;
+    }
+
+    .welcome{
+        border-radius: 10px 10px 0 0;
+    }
+  }
+
+
+
+

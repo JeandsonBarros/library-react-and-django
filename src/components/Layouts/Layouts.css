@@ -1,0 +1,70 @@
+footer,
+header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    /*  background-color: rgba(153, 37, 190, 0.4); */
+    padding: 10px;
+    min-height: 70px;
+
+    /* From https://css.glass */
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+footer a {
+    font-size: 30px;
+    margin: 10px;
+}
+
+.formRegister {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+
+    width: 610px;
+    margin: 10px;
+    
+}
+
+.inputs {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+@media only screen and (max-width: 640px)  {
+    .inputs {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .formRegister {
+        width: 100%;
+    }
+
+    
+}
+
+.inputContainer {
+    margin: 10px;
+}
