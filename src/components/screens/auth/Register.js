@@ -18,7 +18,7 @@ function Register() {
     }
 
     return (
-        <section className='container'>
+        <div>
 
             <UserForm
                 title="Registro"
@@ -28,7 +28,7 @@ function Register() {
             />
             <Link style={{textAlign: 'center'}} to={`/login/`}>Login</Link>
             
-        </section>
+        </div>
     );
 }
 

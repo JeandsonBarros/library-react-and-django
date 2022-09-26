@@ -17,7 +17,7 @@ function NewBook({ refresh }) {
 
     return (
 
-        <section>
+        <div>
             <Button onPress={() => setVisible(true)} shadow auto>Cadastrar livro</Button>
 
             <FormBook
@@ -26,7 +26,7 @@ function NewBook({ refresh }) {
                 visible={visible}
                 setVisible={setVisible}
             />
-        </section>
+        </div>
 
     );
 }

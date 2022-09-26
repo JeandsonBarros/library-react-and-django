@@ -1,50 +1,47 @@
 import { useState } from "react";
 import { Button, Text } from "@nextui-org/react";
 import FormBook from '../../Layouts/FormBook';
-import { getBook, putBook } from '../../../services/BookService'
+import { putBook } from '../../../services/BookService'
+import { BsFillPencilFill } from "react-icons/bs";
 
-function UpdateBook({ id, refresh }) {
+function UpdateBook({ book, id, refresh, buttonText }) {
 
-    const [book, setBook] = useState()
+
     const [visible, setVisible] = useState(false);
 
     async function saveBook(book) {
-       
+
         await putBook(id, book);
         await refresh()
-        
-    }
-
-    async function obterLivro() {
-
-        const data = await getBook(id)
-        setBook(data)
-        setVisible(true)
 
     }
 
     return (
-        <>
+        <div>
 
-            <Button css={{m: 10}}  flat auto onPress={obterLivro} >
+            <Button
+                css={{ m: 5 }}
+                shadow
+                auto
+                color='secondary'
+                onPress={() => setVisible(true)} >
                 <Text
                     css={{ color: "inherit" }}
-                    size={12}
-                    weight="bold"
-                    transform="uppercase"
+                    size={18}
                 >
-                    Editar
+                    {buttonText} <BsFillPencilFill />
                 </Text>
             </Button>
 
-            {visible && <FormBook
+            <FormBook
                 submitAction={saveBook}
                 title='Editar'
                 visible={visible}
                 setVisible={setVisible}
                 bookUpdate={book}
-            />}
-        </>
+            />
+
+        </div>
     );
 }
 

@@ -1,7 +1,6 @@
 import { getToken } from './TokenService'
 import api from './api';
 
-
 export async function getBooks() {
     try {
 
@@ -69,7 +68,7 @@ export async function deleteBook(id){
     try {
 
         const token = getToken();
-        const response = await api.put(`/book/${id}/`,
+        const response = await api.delete(`/book/${id}/`,
             {
                 headers: {
                     'Authorization': `Bearer ${token}`,

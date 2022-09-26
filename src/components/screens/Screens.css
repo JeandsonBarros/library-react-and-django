@@ -71,5 +71,42 @@
   }
 
 
+/* ============= Book Details ================ */
+
+.cardBookDetails{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    background: rgba(255, 255, 255, 0.1);
+    border-radius:10px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    margin: 10px;
+   
+}
+
+@media only screen and (max-width: 1000px) {
+    .cardBookDetails {
+        justify-content: center;
+    }
+}
+
+/* .cardBookDetails img {
+    width: 250px;
+    height: 400px;
+    object-fit: cover;
+    margin: 10px;  
+    padding: 10px;
+} */
+
+.cardBookDetails .bookDetails, .loanContainer{
+    margin: 10px;  
+    padding: 10px;
+    max-width: 550px;
+    
+}
+
 
 

@@ -1,18 +1,18 @@
 import './Layouts.css'
-import { Switch } from "@nextui-org/react";
+import { Switch, Button, } from "@nextui-org/react";
 import { BsFillMoonStarsFill, BsSunFill } from "react-icons/bs";
-
+import { Link } from "react-router-dom";
 
 function Header({ setIsDark, isDark }) {
 
     return (
-        
-            <header>
+   
+            <header >
 
-                <div style={{display:'flex', flexDirection: 'row', alignItems: 'center'}}>
+                <Link to={`/`} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                     <h2>Library</h2>
                     <img style={{ marginLeft: 10 }} src={require('../imgs/logo.png')} width='50' alt="Jeandson Barros" />
-                </div>
+                </Link>
 
                 <Switch
                     checked={!isDark}
@@ -20,15 +20,12 @@ function Header({ setIsDark, isDark }) {
                     iconOn={<BsSunFill />}
                     iconOff={<BsFillMoonStarsFill />}
                     onChange={() => {
-                        
                         setIsDark(!isDark)
-                        
                     }}
                 />
 
             </header>
-            
-        
+
     );
 }
 

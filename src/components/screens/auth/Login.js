@@ -33,7 +33,7 @@ function Login() {
 
     return (
 
-        <section className='container'>
+        <div >
 
             <div className='loginBox' >
 
@@ -72,7 +72,7 @@ function Login() {
 
             </div>
 
-        </section>
+        </div>
 
     );
 }

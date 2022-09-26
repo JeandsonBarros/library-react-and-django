@@ -1,41 +1,41 @@
 import { createTheme, NextUIProvider } from '@nextui-org/react';
 import React, { useState } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Footer from './components/Layouts/Footer';
 import Header from './components/Layouts/Header';
+import NavbarCom from './components/Layouts/Navbar';
 import Login from './components/screens/auth/Login';
 import Register from './components/screens/auth/Register';
+import BookDetails from './components/screens/book/BookDetails';
 import Books from './components/screens/book/Books';
+import Clients from './components/screens/client/Clients';
+import Loans from './components/screens/loan/Loans';
+import Container from './components/screens/Container';
 
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Route,
-} from "react-router-dom";
 
-// 1. Import `createTheme`
-// 2. Call `createTheme` and pass your custom values
 const lightTheme = createTheme({
   type: 'light',
   theme: {
     colors: {
       // brand colors
-      primaryLight: '$green200',
-      primaryLightHover: '$green300',
-      primaryLightActive: '$green400',
-      primaryLightContrast: '$green600',
+      primaryLight: '$purple200',
+      primaryLightHover: '$purple300',
+      primaryLightActive: '$purple400',
+      primaryLightContrast: '$purple600',
       primary: '#9750DD',
       secondary: '#06B7DB',
-      primaryBorder: '$green500',
+      primaryBorder: '$$purple600500',
       primaryBorderHover: '#06B7DB',
-      primarySolidHover: '$green700',
+      primarySolidHover: '$purple700',
       primarySolidContrast: '$white',
       primaryShadow: '#9750DD',
+      secondaryShadow: '#06B7DB',
 
       background: '#fff',
 
       gradient: 'linear-gradient(112deg, $blue100 -25%, $pink500 -10%, $purple500 80%)',
-      link: '#0072F5',
+      link: '#000',
 
       // you can also create your own color
       myColor: '#ff4ecd'
@@ -53,22 +53,23 @@ const darkTheme = createTheme({
   theme: {
     colors: {
       // brand colors
-      primaryLight: '$green200',
-      primaryLightHover: '$green300',
-      primaryLightActive: '$green400',
-      primaryLightContrast: '$green600',
+      primaryLight: '$purple200',
+      primaryLightHover: '$purple300',
+      primaryLightActive: '$purple400',
+      primaryLightContrast: '$purple600',
       primary: '#9750DD',
       secondary: '#06B7DB',
-      primaryBorder: '$green500',
-      primaryBorderHover: '$green600',
-      primarySolidHover: '$green700',
+      primaryBorder: '$purple600n500',
+      primaryBorderHover: '$$purple600600',
+      primarySolidHover: '$$purple600700',
       primarySolidContrast: '$white',
       primaryShadow: '#9750DD',
+      secondaryShadow: '#06B7DB',
 
-      background: '#301934',
+      background: '#080008',
 
       gradient: 'linear-gradient(112deg, $blue100 -25%, $pink500 -10%, $purple500 80%)',
-      link: 'aqua',
+      link: '#fff',
 
       // you can also create your own color
       myColor: '#ff4ecd'
@@ -76,24 +77,11 @@ const darkTheme = createTheme({
       // ...  more colors
     },
     space: {},
-    fonts: {}
+    fonts: {},
+
   }
 })
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Books />,
-  },
-  {
-    path: "/login/",
-    element: <Login />,
-  },
-  {
-    path: "/register/",
-    element: <Register />,
-  },
-]);
 
 export default function App() {
 
@@ -102,13 +90,35 @@ export default function App() {
 
   return (
 
-    <NextUIProvider  theme={isDark ? darkTheme : lightTheme}>
+    <NextUIProvider theme={isDark ? darkTheme : lightTheme}>
 
-      <Header setIsDark={setIsDark} isDark={isDark} />
+      <BrowserRouter>
 
-        <RouterProvider router={router} />
-        
-      <Footer />
+        <Header setIsDark={setIsDark} isDark={isDark} />
+        <hr className='ms-2 me-2' />
+
+        <NavbarCom />
+
+        <Container>
+          
+          <Routes>
+
+            <Route path="/" element={<Books />} />
+            <Route path="/livro/:id/" element={<BookDetails />} />
+            <Route path="/login/" element={<Login />} />
+            <Route path="/register/" element={<Register />} />
+            <Route path="/clientes/" element={<Clients />} />
+            <Route path="/emprestimos/" element={<Loans />} />
+
+          </Routes>
+
+        </Container>
+
+
+        <Footer />
+
+      </BrowserRouter>
+
 
     </NextUIProvider>
 

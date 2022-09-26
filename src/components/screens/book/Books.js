@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { getBooks } from '../../../services/BookService'
+
+
+import { Card, Col, Text} from '@nextui-org/react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { getBooks } from '../../../services/BookService';
 import { getToken } from '../../../services/TokenService';
-import { useNavigate } from "react-router-dom";
-import '../../styles/Styles.css';
 import NewBook from './NewBook';
+import RemoveBook from './RemoveBook';
 import UpdateBook from './UpdateBook';
-import { Card, Col, Button, Text } from "@nextui-org/react";
 
 function Books() {
 
@@ -27,17 +30,27 @@ function Books() {
     }
 
     return (
-        <section className='container'>
+        <div >
+
             <div >
                 <h1>Livros</h1>
-
+                
                 <NewBook refresh={getBooksFunction} />
 
                 <div className='d-flex flex-row flex-wrap justify-content-start mt-4' >
                     {books.length > 0 && books.map(book => {
                         return (
 
-                            <Card key={book.id} css={{ w: "230px", h: '280px', m: '10px' }}>
+                            <Card
+                                isHoverable
+                                isPressable
+                                key={book.id}
+                                onPress={() => navigate(`/livro/${book.id}/`)}
+                                css={{
+                                    w: "230px",
+                                    h: '280px',
+                                    m: '10px'
+                                }}>
                                 <Card.Header css={{ position: "absolute", zIndex: 1, top: 5 }}>
                                     <Col>
                                         <Text size={12} weight="bold" transform="uppercase" color="#ffffffAA">
@@ -70,18 +83,9 @@ function Books() {
                                         zIndex: 1,
                                     }}
                                 >
-                                    <Button flat auto color="error" css={{ m: 10 }} >
-                                        <Text
-                                            css={{ color: "inherit" }}
-                                            size={12}
-                                            weight="bold"
-                                            transform="uppercase"
-                                        >
-                                            Deletar
-                                        </Text>
-                                    </Button>
 
-                                    <UpdateBook refresh={getBooksFunction} id={book.id} />
+                                    <RemoveBook refresh={getBooksFunction} id={book.id} title={book.title} />
+                                    <UpdateBook refresh={getBooksFunction} id={book.id} book={book}/>
 
                                 </Card.Footer>
                             </Card>
@@ -90,9 +94,8 @@ function Books() {
                     })}
 
                 </div>
-
             </div>
-        </section>
+        </div>
     );
 }
 

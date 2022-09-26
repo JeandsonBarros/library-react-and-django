@@ -44,6 +44,8 @@ function FormBook({ submitAction, title, visible, setVisible, bookUpdate }) {
 
                 <Modal.Body>
 
+                    <hr/>
+
                     <CustomInput
                         placeholder="Titulo"
                         setValue={text => setValue('title', text)}
@@ -69,7 +71,7 @@ function FormBook({ submitAction, title, visible, setVisible, bookUpdate }) {
                         value={book.synopsis || ''}
                     />
 
-                    <div style={{ marginTop: '50px', width: '100%' }}>
+                    <div style={{ marginTop: '10px', width: '100%' }}>
                         <label htmlFor='imageId' >Capa</label>
                         <input
                             id='imageId'
@@ -79,6 +81,8 @@ function FormBook({ submitAction, title, visible, setVisible, bookUpdate }) {
                            
                         />
                     </div>
+
+                    <hr/>
 
                 </Modal.Body>
                 <Modal.Footer>

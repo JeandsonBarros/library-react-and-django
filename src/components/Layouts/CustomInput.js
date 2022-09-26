@@ -8,7 +8,6 @@ export default function CustomInput({ setValue, value, placeholder, type }) {
 
     return (
         <Input
-            clearable
             underlined
             labelPlaceholder={placeholder}
             value={value}
@@ -21,6 +20,7 @@ export default function CustomInput({ setValue, value, placeholder, type }) {
             status={status}
             onFocus={()=>setStatus('default')}
             onBlur={() => valueTemp.length > 0? setStatus('success') : setStatus('error')}
+
         />
     )
 }
