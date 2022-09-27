@@ -4,7 +4,7 @@ from client.models import Client
 from django.contrib.auth.models import User
 
 class Loan(models.Model):
-    returnDate = models.DateTimeField(auto_now_add=False)
+    returnDate = models.DateField(auto_now_add=False)
     rentalDate = models.DateTimeField(auto_now_add=True, editable=False)
     value = models.FloatField()
     returned = models.BooleanField(default=False)

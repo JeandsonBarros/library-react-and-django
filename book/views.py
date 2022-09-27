@@ -1,3 +1,4 @@
+from email.mime import image
 from rest_framework.decorators import api_view
 from book.models import Book
 from book.serializers import BookSerializer
@@ -45,14 +46,13 @@ class BaseViewBooKListAndCreate(APIView, LimitOffsetPagination):
                 synopsis = booksSerializer.data['synopsis'],
                 author = booksSerializer.data['author'],
                 isbn = booksSerializer.data['isbn'],
-                user = request.user,
-                image = request.data['image'] 
+                user = request.user,         
             )
 
-            """ if request.data['image']:
-                book.image = request.data['image'] 
-            """
-
+            if 'image' in request.data:
+                if  request.data['image'] is not None:
+                    book.image = request.data['image'] 
+           
             book.save()
             return Response(booksSerializer.data, status=status.HTTP_201_CREATED)
         return Response(booksSerializer.errors, status=status.HTTP_400_BAD_REQUEST)

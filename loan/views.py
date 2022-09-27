@@ -14,6 +14,11 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
 search_param = openapi.Parameter('book', openapi.IN_QUERY, description="Search loan for book id", type=openapi.TYPE_INTEGER)
+returned = openapi.Parameter(
+    'returned',
+    openapi.IN_QUERY,
+    description="List orders for books that have already been returned",
+    type=openapi.TYPE_BOOLEAN)
 
 class LoanListAndCreate(APIView, LimitOffsetPagination):
     
@@ -31,16 +36,27 @@ class LoanListAndCreate(APIView, LimitOffsetPagination):
             raise NotFound()
     
     @swagger_auto_schema(
-        manual_parameters=[search_param],
+        manual_parameters=[search_param, returned],
         responses={200: LoanSerializer(many=True)},
         operation_description="All user loans",)     
     def get (self, request):
         loans = Loan.objects.filter(user=request.user)
 
         bookId = request.query_params.get('book')
-        if bookId is not None:
+        returnedBooks = request.query_params.get('returned')
+
+        if bookId is not None and returnedBooks is not None:
+            returned = True if returnedBooks == 'true' else False
+            loans = Loan.objects.filter(book=bookId, returned=returned)
+
+        elif bookId is not None:
             loans = Loan.objects.filter(book=bookId)
 
+        elif returnedBooks is not None:
+            returned = True if returnedBooks == 'true' else False
+            loans = Loan.objects.filter(returned=returned)
+
+        
         results = self.paginate_queryset(loans, request, view=self)
         serializer = LoanSerializer(results, many=True)
         return self.get_paginated_response(serializer.data)
@@ -74,8 +90,7 @@ class LoanListAndCreate(APIView, LimitOffsetPagination):
             loan.save()
             return Response(loanSerializer.data, status=status.HTTP_201_CREATED)
         return Response(loanSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-          
+                 
 class LoanDetailChangeAndDelete(APIView):
     
     def get_object(self, user, pk):
@@ -112,4 +127,5 @@ class LoanDetailChangeAndDelete(APIView):
         loan = self.get_object(request.user, pk)
         loan.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 
