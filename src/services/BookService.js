@@ -1,84 +1,95 @@
 import { getToken } from './TokenService'
 import api from './api';
 
-export async function getBooks() {
+export async function getBooks(offset = 0, title = '') {
     try {
 
-        const token = getToken();
-        const response = await api.get('/book/', { headers: { 'Authorization': `Bearer ${token}` } })
+        const response = await api.get(`/book/?limit=10&offset=${offset}&title=${title}`,
+            {
+                headers: {
+                    'Authorization': `Bearer ${getToken()}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
 
         return response.data;
 
     } catch (error) {
         console.log(error);
+        //alert("Erro ao listar livros")
+        return "Erro ao listar livros"
     }
 }
 
 export async function getBook(id) {
     try {
 
-        const token = getToken();
-        const response = await api.get(`/book/${id}/`, { headers: { 'Authorization': `Bearer ${token}` } })
-        
-        return response.data;
+        const response = await api.get(`/book/${id}/`, {
+            headers: {
+                'Authorization': `Bearer ${getToken()}`,
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+
+        return response;
 
     } catch (error) {
-        console.log(error);
+        return 'Erro ao buscar dados do livro.';
     }
 }
 
 export async function postBook(book) {
     try {
 
-        const token = getToken();
-        const response = await api.post('/book/', book,
-            {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
+        await api.post('/book/', book, {
+            headers: {
+                'Authorization': `Bearer ${getToken()}`,
+                'Content-Type': 'multipart/form-data'
+            }
+        })
 
-        console.log(response);
+        return 'Novo livro adicionado!'
+
     } catch (error) {
-        console.log(error);
+        return "Erro ao salvar livro!"
     }
 }
 
-export async function putBook(id, book){
+export async function putBook(id, book) {
     try {
 
-        const token = getToken();
-        const response = await api.put(`/book/${id}/`, book,
-            {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
+        if (typeof (book.image) == 'string')
+            delete book.image
 
-        console.log(response);
+        await api.put(`/book/${id}/`, book, {
+            headers: {
+                'Authorization': `Bearer ${getToken()}`,
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+
+        return 'Livro atualizado com sucesso!'
+
     } catch (error) {
-        console.log(error);
+        return "Error ao atualizar livro."
     }
 
 }
 
-export async function deleteBook(id){
+export async function deleteBook(id) {
     try {
 
-        const token = getToken();
-        const response = await api.delete(`/book/${id}/`,
-            {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
+        await api.delete(`/book/${id}/`, {
+            headers: {
+                'Authorization': `Bearer ${getToken()}`,
+                'Content-Type': 'multipart/form-data'
+            }
+        })
 
-        console.log(response);
+        return 'Livro removido!'
+
     } catch (error) {
-        console.log(error);
+        return ("Error ao deletar livro!")
     }
 
 }

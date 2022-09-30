@@ -1,5 +1,5 @@
 import { Button, Text } from '@nextui-org/react';
-import  { useState } from 'react';
+import { useState } from 'react';
 import { BsTrashFill } from 'react-icons/bs';
 
 import { deleteBook } from '../../../services/BookService';
@@ -17,7 +17,7 @@ export default function RemoveBook({ id, title, refresh, buttonText }) {
                     css={{ color: "inherit" }}
                     size={18}
                 >
-                   {buttonText} <BsTrashFill />
+                    {buttonText} <BsTrashFill />
                 </Text>
             </Button>
 
@@ -27,8 +27,8 @@ export default function RemoveBook({ id, title, refresh, buttonText }) {
                 visible={visible}
                 setVisible={setVisible}
                 action={async () => {
-                    await deleteBook(id)
-                    await refresh()
+                    const data = await deleteBook(id)
+                    await refresh(data)
                     setVisible(false)
                 }}
             />

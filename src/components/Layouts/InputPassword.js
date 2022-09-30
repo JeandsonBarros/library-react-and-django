@@ -9,7 +9,6 @@ export default function InputPassword({ setValue, value, placeholder }) {
 
     return (
         <Input.Password
-            clearable
             underlined
             labelPlaceholder={placeholder}
             css={{ marginTop: '50px', width: '100%' }}

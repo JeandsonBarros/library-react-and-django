@@ -4,7 +4,7 @@ import ModalConfirm from '../../Layouts/ModalConfirm';
 import { BsTrashFill } from "react-icons/bs";
 import { deleteLoan } from '../../../services/LoanService'
 
-function RemoveLoan({ id, refresh}) {
+function RemoveLoan({ id, refresh }) {
 
     const [visible, setVisible] = useState(false);
 
@@ -26,8 +26,8 @@ function RemoveLoan({ id, refresh}) {
                 visible={visible}
                 setVisible={setVisible}
                 action={async () => {
-                    await deleteLoan(id)
-                    await refresh()
+                    const data = await deleteLoan(id)
+                    await refresh(data)
                     setVisible(false)
                 }}
             />

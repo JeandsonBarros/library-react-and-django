@@ -1,18 +1,28 @@
-import React from "react";
-import { Navbar, Button, Text } from "@nextui-org/react";
-import { Link, NavLink } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Navbar, Text, Dropdown } from "@nextui-org/react";
+import { NavLink, useNavigate } from "react-router-dom";
 import '../styles/Styles.css'
 import { BsPerson } from "react-icons/bs";
+import { logout, getUser } from '../../services/AuthService';
 
 export default function NavbarCom() {
 
-  const variants = ["static", "floating", "sticky"];
+  const navigate = useNavigate()
   const styleNavLink = (navData) => (navData.isActive ? 'active' : 'noActive')
+  const [user, setUser] = useState({ username: '', email: '' })
+
+  useEffect(() => {
+    getUser().then(data => { setUser(data) });
+  }, [])
 
   return (
 
     <Navbar isBordered variant='floating' css={{ zIndex: 900 }}>
-      
+
+      <Navbar.Brand showIn='xs'>
+        <Navbar.Toggle aria-label="toggle navigation" />
+      </Navbar.Brand>
+
       <Navbar.Content hideIn="xs">
 
         <NavLink className={styleNavLink} to="/" end>Livros</NavLink>
@@ -20,14 +30,62 @@ export default function NavbarCom() {
         <NavLink className={styleNavLink} to="/emprestimos/"> Empréstimos </NavLink>
 
       </Navbar.Content>
+
       <Navbar.Content>
-        <Navbar.Item>
-          <Button light auto as={Link} href="/">
-            <Text size={25} ><BsPerson /></Text>
-          </Button>
-        </Navbar.Item>
+
+        <Dropdown placement="bottom-left">
+
+          <Dropdown.Button light >
+            <Text size={20}> <BsPerson /> </Text>
+          </Dropdown.Button>
+
+          <Dropdown.Menu
+            onAction={(value) => {
+
+              if (value === "logout") {
+                logout()
+                navigate("/login/")
+              } else if (value === "count") {
+                navigate("/conta/")
+              }
+
+            }}
+            color="primary"
+            aria-label="User Actions">
+
+            <Dropdown.Item key="count">
+
+              Conta: {user.username}
+
+            </Dropdown.Item>
+
+            <Dropdown.Item key="logout" color="error" withDivider>
+              Sair
+            </Dropdown.Item>
+
+          </Dropdown.Menu>
+
+        </Dropdown>
+
       </Navbar.Content>
-    </Navbar>
+
+      <Navbar.Collapse showIn='xs'>
+
+        <Navbar.CollapseItem >
+          <NavLink className={styleNavLink} to="/" end>Livros</NavLink>
+        </Navbar.CollapseItem>
+
+        <Navbar.CollapseItem >
+          <NavLink className={styleNavLink} to="/clientes/">Clientes</NavLink>
+        </Navbar.CollapseItem>
+
+        <Navbar.CollapseItem >
+          <NavLink className={styleNavLink} to="/emprestimos/"> Empréstimos </NavLink>
+        </Navbar.CollapseItem>
+
+      </Navbar.Collapse>
+
+    </Navbar >
 
   )
 }

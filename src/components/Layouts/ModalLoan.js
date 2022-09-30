@@ -1,19 +1,23 @@
-import { Modal, Text, Checkbox, Radio, Button } from "@nextui-org/react";
+import { Modal, Text, Checkbox, Radio, Button, Input } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { getClients, getClient } from "../../services/ClientService";
 import CustomInput from "./CustomInput";
 import DateInput from "./DateInput";
+import { BsPlusCircleFill } from 'react-icons/bs';
 
 function ModalLoan({ title, visible, setVisible, actionSubmit, loanUpdate }) {
 
     const [clients, setClients] = useState([]);
     const [loan, setLoan] = useState(loanUpdate || {});
+    const [search, setSearch] = useState('')
+    const [totalClients, setTotalClients] = useState(0);
+    const [offset, setOffset] = useState(0);
 
     useEffect(() => {
         if (loanUpdate)
             getClient(loanUpdate.client).then(data => setClients(data))
         else
-            getClients().then(data => setClients(data.results))
+            listClients()
     }, [])
 
     function setValue(key, value) {
@@ -28,9 +32,28 @@ function ModalLoan({ title, visible, setVisible, actionSubmit, loanUpdate }) {
         await actionSubmit(loan)
     }
 
+    async function listClients(offsetValue = 0, name = '') {
+
+        const data = await getClients(offsetValue, name)
+        setTotalClients(data.count)
+
+        offsetValue === 0 ? setClients(data.results) : setClients(clients.concat(data.results))
+
+    }
+
+    
+
+    async function pagination() {
+
+        listClients(offset + 10, search)
+        setOffset(offset + 10)
+
+    }
+
 
     return (
         <Modal
+            blur
             closeButton
             aria-labelledby="modal-title"
             open={visible}
@@ -48,6 +71,20 @@ function ModalLoan({ title, visible, setVisible, actionSubmit, loanUpdate }) {
 
                 <hr />
 
+                <Input
+                    underlined
+                    labelPlaceholder="Buscar cliente"
+                    value={search}
+                    onChange={event => {
+                        listClients(0, event.target.value,)
+                        setSearch(event.target.value)
+                        setOffset(0)
+                    }}
+                    css={{
+                        mt: 15
+                    }}
+                />
+
                 <div style={{ overflowY: 'auto', maxHeight: 300 }} >
 
                     <div>
@@ -64,21 +101,41 @@ function ModalLoan({ title, visible, setVisible, actionSubmit, loanUpdate }) {
                                 </Radio>
                             </Radio.Group>
                             :
-                            <Radio.Group
-                                onChange={(value => setValue('client', value))}
-                                css={{ m: 5 }}
-                                label="Cliente"
-                                orientation="vertical">
-                                {
-                                    clients.map(client => {
-                                        return (
-                                            <Radio size="sm" key={client.id} value={client.id} description={`CPF: ${client.CPF}`} >
-                                                {client.name}
-                                            </Radio>
-                                        )
-                                    })
-                                }
-                            </Radio.Group>
+                            <>
+                                <Radio.Group
+                                    onChange={(value => setValue('client', value))}
+                                    css={{ m: 5 }}
+                                    label="Clientes"
+                                    orientation="vertical">
+                                    {
+                                        clients.map(client => {
+                                            return (
+                                                <Radio size="sm" key={client.id} value={client.id} description={`CPF: ${client.CPF}`} >
+                                                    {client.name}
+                                                </Radio>
+                                            )
+                                        })
+                                    }
+                                </Radio.Group>
+                                {totalClients !== clients.length && <Button
+                                    auto
+                                    light
+                                    rounded
+                                    css={{
+                                        m: 'auto',
+                                        p: 10,
+                                        h: 60,
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center'
+                                    }}
+                                    onPress={pagination}
+                                >
+                                    <Text size={40}  >
+                                        <BsPlusCircleFill />
+                                    </Text>
+                                </Button>}
+                            </>
                         }
 
                     </div>
@@ -100,7 +157,12 @@ function ModalLoan({ title, visible, setVisible, actionSubmit, loanUpdate }) {
                     value={loan.returnDate}
                 />
 
-                {loanUpdate && <Checkbox defaultSelected={false}>Devolvido</Checkbox>}
+                {loanUpdate &&
+                    <Checkbox
+                        onChange={(value) => setValue("returned", value)}
+                        defaultSelected={loan.returned}>
+                        Devolvido
+                    </Checkbox>}
 
                 <hr />
 

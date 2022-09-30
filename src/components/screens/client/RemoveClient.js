@@ -9,15 +9,15 @@ function RemoveClient({ id, clientName, refresh }) {
     const [visible, setVisible] = useState(false);
 
     async function removeClient() {
-        await deleteClient(id)
-        await refresh()
+        const data = await deleteClient(id)
+        await refresh(data)
         setVisible(false)
     }
 
     return (
         <div>
 
-            <Tooltip content="Remover" > 
+            <Tooltip content="Remover" >
                 <Button css={{ m: 5 }} onPress={() => setVisible(true)} color="error" auto>
                     <BsTrashFill />
                 </Button>

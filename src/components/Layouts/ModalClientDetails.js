@@ -16,6 +16,7 @@ function ModalClientDetails({ client }) {
             </Tooltip>
 
             <Modal
+                blur
                 closeButton
                 open={visible}
                 onClose={() => setVisible(false)}

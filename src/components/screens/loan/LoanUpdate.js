@@ -9,9 +9,9 @@ function LoanUpdate({ loan, refresh }) {
     const [visible, setVisible] = useState(false)
 
     async function updateLoan(loan) {
-        console.log(loan);
-        //putLoan(loan.id, loan)
-        await refresh()
+
+        const data = await putLoan(loan.id, loan)
+        await refresh(data)
         setVisible(false)
     }
 

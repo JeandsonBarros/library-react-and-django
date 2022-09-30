@@ -10,6 +10,7 @@ import InputPassword from '../../Layouts/InputPassword';
 import {getToken} from '../../../services/TokenService';
 import { useNavigate } from "react-router-dom";
 
+
 function Login() {
     let navigate = useNavigate();
     const [username, setUsername] = useState('')
@@ -26,14 +27,14 @@ function Login() {
         const data = await login(username, password);
 
         if (data === 200)
-            alert("Logado")
+            return navigate("/");  
         else
             setAlertMessage(data)
     }
 
     return (
 
-        <div >
+        <div className='centerItems'>
 
             <div className='loginBox' >
 

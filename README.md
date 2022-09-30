@@ -1,6 +1,9 @@
-# Getting Started with Create React App
+# About the library management front-end with React JS
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Web application developed with[ Django REST framework](https://www.django-rest-framework.org/) and
+[React JS](https://github.com/facebook/create-react-app) for library management.
+
+<img src="./print_books.png" />
 
 ## Installation of dependencies
 

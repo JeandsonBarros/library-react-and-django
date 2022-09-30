@@ -9,10 +9,10 @@ function UpdateBook({ book, id, refresh, buttonText }) {
 
     const [visible, setVisible] = useState(false);
 
-    async function saveBook(book) {
+    async function saveBook(bookUpdate) {
 
-        await putBook(id, book);
-        await refresh()
+       const data = await putBook(id, bookUpdate);
+       await refresh(data)
 
     }
 

@@ -5,13 +5,13 @@ import { Button, Tooltip } from "@nextui-org/react";
 import { putClient } from '../../../services/ClientService'
 import { BsFillPencilFill } from 'react-icons/bs';
 
-function UpdateClient({id, client, refresh }) {
+function UpdateClient({ id, client, refresh }) {
 
     const [visible, setVisible] = useState(false);
 
     async function updateClient(client) {
-        await putClient(id, client)
-        await refresh()
+        const data = await putClient(id, client)
+        await refresh(data)
         setVisible(false)
     }
 

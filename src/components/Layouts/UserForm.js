@@ -1,7 +1,7 @@
 import '../styles/Styles.css';
 import './Layouts.css'
 
-import { Button, Text } from '@nextui-org/react';
+import { Button, Text, Card } from '@nextui-org/react';
 import { useState } from 'react';
 
 import CustomInput from './CustomInput';
@@ -12,7 +12,7 @@ export default function UserForm({
     title,
     buttonText,
     actionSubmit,
-    alertMessage
+   
 }) {
 
 
@@ -44,8 +44,6 @@ export default function UserForm({
             <form onSubmit={submitFunction} className="formRegister">
 
                 <h1>{title}</h1>
-
-                <Text color="error" >{alertMessage}</Text>
 
                 <div className='inputs'>
 

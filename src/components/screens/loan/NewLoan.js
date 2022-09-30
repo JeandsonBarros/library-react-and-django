@@ -4,14 +4,15 @@ import { BsPlusCircleFill } from 'react-icons/bs';
 import ModalLoan from "../../Layouts/ModalLoan";
 import { postLoan } from '../../../services/LoanService';
 
-function NewLoan({ bookId }) {
+function NewLoan({ bookId, refresh }) {
 
     const [visible, setVisible] = useState(false);
 
     async function saveLoan(loan) {
-       
-        loan = {...loan, book: bookId}
-        await postLoan(loan)
+
+        loan = { ...loan, book: bookId }
+        const data = await postLoan(loan)
+        await refresh(data)
         setVisible(false)
 
     }

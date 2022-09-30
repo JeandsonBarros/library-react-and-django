@@ -1,4 +1,4 @@
-import {Button, Text, Modal } from "@nextui-org/react";
+import { Button, Text, Modal } from "@nextui-org/react";
 
 export default function ModalConfirm({ title, message, visible, setVisible, action }) {
 
@@ -10,6 +10,7 @@ export default function ModalConfirm({ title, message, visible, setVisible, acti
     return (
 
         <Modal
+            blur
             closeButton
             aria-labelledby="modal-title"
             open={visible}

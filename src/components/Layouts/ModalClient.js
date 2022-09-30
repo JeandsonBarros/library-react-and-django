@@ -27,6 +27,7 @@ function ModalClient({ submitAction, title, visible, setVisible, clientUpdate })
 
 
         <Modal
+            blur
             closeButton
             aria-labelledby="modal-title"
             open={visible}

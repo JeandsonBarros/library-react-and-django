@@ -2,9 +2,9 @@ import { createTheme, NextUIProvider } from '@nextui-org/react';
 import React, { useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
+
 import Footer from './components/Layouts/Footer';
 import Header from './components/Layouts/Header';
-import NavbarCom from './components/Layouts/Navbar';
 import Login from './components/screens/auth/Login';
 import Register from './components/screens/auth/Register';
 import BookDetails from './components/screens/book/BookDetails';
@@ -12,7 +12,7 @@ import Books from './components/screens/book/Books';
 import Clients from './components/screens/client/Clients';
 import Loans from './components/screens/loan/Loans';
 import Container from './components/screens/Container';
-
+import UserConfig from './components/screens/auth/UserConfig';
 
 const lightTheme = createTheme({
   type: 'light',
@@ -82,7 +82,6 @@ const darkTheme = createTheme({
   }
 })
 
-
 export default function App() {
 
   const darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
@@ -97,18 +96,18 @@ export default function App() {
         <Header setIsDark={setIsDark} isDark={isDark} />
         <hr className='ms-2 me-2' />
 
-        <NavbarCom />
-
         <Container>
           
           <Routes>
-
+            
+            <Route path='*' element={<h1> 404 - Pagina não encontrada</h1>} />
             <Route path="/" element={<Books />} />
             <Route path="/livro/:id/" element={<BookDetails />} />
             <Route path="/login/" element={<Login />} />
             <Route path="/register/" element={<Register />} />
             <Route path="/clientes/" element={<Clients />} />
             <Route path="/emprestimos/" element={<Loans />} />
+            <Route path="/conta/" element={<UserConfig />} />
 
           </Routes>
 
