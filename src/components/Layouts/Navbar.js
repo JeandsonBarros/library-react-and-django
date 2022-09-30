@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Navbar, Text, Dropdown } from "@nextui-org/react";
+import { Navbar, Text, Dropdown, Link } from "@nextui-org/react";
 import { NavLink, useNavigate } from "react-router-dom";
 import '../styles/Styles.css'
 import { BsPerson } from "react-icons/bs";
@@ -54,9 +54,7 @@ export default function NavbarCom() {
             aria-label="User Actions">
 
             <Dropdown.Item key="count">
-
               Conta: {user.username}
-
             </Dropdown.Item>
 
             <Dropdown.Item key="logout" color="error" withDivider>
@@ -72,15 +70,15 @@ export default function NavbarCom() {
       <Navbar.Collapse showIn='xs'>
 
         <Navbar.CollapseItem >
-          <NavLink className={styleNavLink} to="/" end>Livros</NavLink>
+          <Link className={styleNavLink} href="/">Livros</Link>
         </Navbar.CollapseItem>
 
         <Navbar.CollapseItem >
-          <NavLink className={styleNavLink} to="/clientes/">Clientes</NavLink>
+          <Link className={styleNavLink} href="/clientes/">Clientes</Link>
         </Navbar.CollapseItem>
 
         <Navbar.CollapseItem >
-          <NavLink className={styleNavLink} to="/emprestimos/"> Empréstimos </NavLink>
+          <Link className={styleNavLink} href="/emprestimos/"> Empréstimos </Link>
         </Navbar.CollapseItem>
 
       </Navbar.Collapse>

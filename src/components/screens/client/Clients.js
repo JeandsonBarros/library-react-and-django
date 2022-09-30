@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Table, Row, Input } from "@nextui-org/react";
 import { postClient, getClients } from '../../../services/ClientService'
 import Alert from '../../Layouts/Alert'
-import { BsPlusCircleFill } from 'react-icons/bs';
+import { BsPlusCircleFill, BsSearch } from 'react-icons/bs';
 
 function Clients() {
 
@@ -82,6 +82,7 @@ function Clients() {
                     underlined
                     labelPlaceholder='Buscar cliente'
                     value={search}
+                    contentRight={<BsSearch/>}
                     css={{ mt: 40 }}
                     onChange={event => {
                         listClients(0, event.target.value,)

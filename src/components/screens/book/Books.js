@@ -1,7 +1,7 @@
 import { Card, Col, Text, Row, Input, Button } from '@nextui-org/react';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BsPlusCircleFill } from 'react-icons/bs';
+import { BsPlusCircleFill, BsSearch } from 'react-icons/bs';
 import { getBooks } from '../../../services/BookService';
 
 import NewBook from './NewBook';
@@ -84,6 +84,7 @@ function Books() {
                         width='200px'
                         underlined
                         css={{ mt: 40 }}
+                        contentRight={<BsSearch/>}
                         labelPlaceholder='Buscar livro'
                         onChange={event => {
                             getBooksFunction(0, event.target.value)

@@ -3,7 +3,7 @@ import '../Screens.css';
 
 import { Button, Collapse, Input, Row, Text } from '@nextui-org/react';
 import { useEffect, useState } from 'react';
-import { BsPlusCircleFill } from 'react-icons/bs';
+import { BsPlusCircleFill, BsSearch } from 'react-icons/bs';
 
 import { getBook } from '../../../services/BookService';
 import { getClient } from '../../../services/ClientService';
@@ -141,6 +141,7 @@ function Loans() {
                 <Input
                     underlined
                     labelPlaceholder='Busacar empréstimo'
+                    contentRight={<BsSearch/>}
                     css={{ mt: 40 }}
                     onChange={event => {
                         listLoans(0, loansFilter, event.target.value)

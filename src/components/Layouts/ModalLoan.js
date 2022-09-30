@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { getClients, getClient } from "../../services/ClientService";
 import CustomInput from "./CustomInput";
 import DateInput from "./DateInput";
-import { BsPlusCircleFill } from 'react-icons/bs';
+import { BsPlusCircleFill, BsSearch } from 'react-icons/bs';
 
 function ModalLoan({ title, visible, setVisible, actionSubmit, loanUpdate }) {
 
@@ -75,6 +75,7 @@ function ModalLoan({ title, visible, setVisible, actionSubmit, loanUpdate }) {
                     underlined
                     labelPlaceholder="Buscar cliente"
                     value={search}
+                    contentRight={<BsSearch/>}
                     onChange={event => {
                         listClients(0, event.target.value,)
                         setSearch(event.target.value)
