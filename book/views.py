@@ -78,11 +78,15 @@ class BaseViewBookDetailChangeAndDelete(APIView):
         request_body=BookSerializer,
         operation_description="Update a book")
     def put(self, request, pk):
+
         book = self.get_object(request.user, pk)
         bookSerializer = BookSerializer(book, data=request.data)
+
         if bookSerializer.is_valid():
             bookSerializer.save()
             return Response(bookSerializer.data)
+
+        print(bookSerializer.errors)  
         return Response(bookSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @swagger_auto_schema(
