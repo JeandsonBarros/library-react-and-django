@@ -59,24 +59,22 @@ class LoanListAndCreate(APIView, LimitOffsetPagination):
 
         if bookId is not None and returnedBooks is not None:
             returned = True if returnedBooks == 'true' else False
-            loans = Loan.objects.filter(book=bookId, returned=returned)
+            loans = Loan.objects.filter(book=bookId, returned=returned, user=request.user)
 
         elif titleBook is not None and returnedBooks is not None:
             returned = True if returnedBooks == 'true' else False
-            loans = Loan.objects.filter(book__title__contains=titleBook, returned=returned)
+            loans = Loan.objects.filter(book__title__contains=titleBook, returned=returned, user=request.user)
 
         elif bookId is not None:
-            loans = Loan.objects.filter(book=bookId)
+            loans = Loan.objects.filter(book=bookId, user=request.user)
 
         elif returnedBooks is not None:
             returned = True if returnedBooks == 'true' else False
-            loans = Loan.objects.filter(returned=returned)
+            loans = Loan.objects.filter(returned=returned, user=request.user)
         
         elif titleBook is not None:
-            loans = Loan.objects.filter(book__title__contains=titleBook)
+            loans = Loan.objects.filter(book__title__contains=titleBook, user=request.user)
            
-                    
-
         results = self.paginate_queryset(loans, request, view=self)
         serializer = LoanSerializer(results, many=True)
         return self.get_paginated_response(serializer.data)
