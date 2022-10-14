@@ -67,12 +67,6 @@ function Register() {
                 }}
             />
 
-           {/*  {alertMessage && <Card css={{ mt: 10 }}>
-                <Card.Body>
-                    <Text color='error' size={20} > {alertMessage} </Text>
-                </Card.Body>
-            </Card>}
- */}
             <form onSubmit={registerSubmit} className="formRegister">
 
                 <h1>Cadastro</h1>

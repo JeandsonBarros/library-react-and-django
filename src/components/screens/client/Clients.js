@@ -168,7 +168,7 @@ function Clients() {
 
                 </Table>
 
-                {progressVisible && <Loading className='d-flex flex-row justify-content-center mt-4' indeterminated value={50} />}
+                {progressVisible && <Loading className='d-flex flex-row justify-content-center mt-4' />}
 
 
 

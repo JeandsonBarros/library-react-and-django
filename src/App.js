@@ -113,11 +113,9 @@ export default function App() {
 
         </Container>
 
-
         <Footer />
 
       </BrowserRouter>
-
 
     </NextUIProvider>
 

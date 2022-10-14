@@ -141,7 +141,7 @@ function ModalLoan({ title, visible, setVisible, actionSubmit, loanUpdate }) {
                                     }
                                 </Radio.Group>
 
-                                {loadingVisible && <Loading className='d-flex flex-row justify-content-center mt-4' indeterminated value={50} />}
+                                {loadingVisible && <Loading className='d-flex flex-row justify-content-center mt-4' />}
 
                                 {totalClients !== clients.length && <Button
                                     auto

@@ -11,7 +11,8 @@ import UpdateBook from './UpdateBook';
 
 function Books() {
 
-    let navigate = useNavigate();
+    const navigate = useNavigate();
+    
     const [books, setBooks] = useState([]);
 
     const [msg, setMsg] = useState('')
@@ -24,6 +25,7 @@ function Books() {
 
     const [progressVisible, setProgressVisible] = useState(false);
 
+    
 
     useEffect(() => {
         getBooksFunction()
@@ -172,7 +174,7 @@ function Books() {
 
                 </div>
 
-                {progressVisible && <Loading className='d-flex flex-row justify-content-center mt-4' indeterminated value={50} />}
+                {progressVisible && <Loading className='d-flex flex-row justify-content-center mt-4'  />}
 
                 <div className='d-flex flex-row justify-content-center mt-4'>
                     {(totalBooks !== books.length && totalBooks > 0) && <Button

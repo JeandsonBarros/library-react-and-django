@@ -168,7 +168,7 @@ function UserConfig() {
 
                     <Text color={passwordConfirmAlert.status} >{passwordConfirmAlert.text}</Text>
 
-                    {progressVisible && <Loading className='d-flex flex-row justify-content-center mt-4' indeterminated value={50} />}
+                    {progressVisible && <Loading className='d-flex flex-row justify-content-center mt-4' />}
 
                     <InputPassword
                         setValue={text => setPassword(text)}

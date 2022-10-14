@@ -50,7 +50,6 @@ function BookDetails() {
     const params = useParams();
     const [book, setBook] = useState({})
 
-
     const [loansReturned, setLoansReturned] = useState([])
     const [loansNoReturned, setLoansNoReturned] = useState([])
 
