@@ -1,35 +1,47 @@
 import '../../styles/Styles.css';
 import '../Screens.css';
 
-import { Button, Text } from '@nextui-org/react';
+import { Button, Loading, Text } from '@nextui-org/react';
 import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { login } from '../../../services/AuthService';
 import CustomInput from '../../Layouts/CustomInput';
 import InputPassword from '../../Layouts/InputPassword';
-import {getToken} from '../../../services/TokenService';
+import { getToken } from '../../../services/TokenService';
 import { useNavigate } from "react-router-dom";
 
-
 function Login() {
+    
     let navigate = useNavigate();
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [alertMessage, setAlertMessage] = useState()
+    const [loadingVisible, setLoadingVisible] = useState(false);
 
     useEffect(() => {
         if (getToken())
-            return navigate("/");      
+            return navigate("/");
     })
 
     async function loginSubmit(event) {
         event.preventDefault();
+
+        if (!username)
+            return setAlertMessage('Informe o nome de usuário')
+
+        if (!password)
+            return setAlertMessage('Informe a senha')
+
+        setLoadingVisible(true)
+
         const data = await login(username, password);
 
         if (data === 200)
-            return navigate("/");  
+            return navigate("/");
         else
             setAlertMessage(data)
+
+        setLoadingVisible(false)
     }
 
     return (
@@ -51,6 +63,8 @@ function Login() {
 
                     <Text color="error" >{alertMessage}</Text>
 
+                    {loadingVisible && <Loading />}
+
                     <CustomInput
                         placeholder="Nome de usuário"
                         setValue={text => { setUsername(text) }}
@@ -62,12 +76,12 @@ function Login() {
                         setValue={text => { setPassword(text) }}
                         value={password}
                     />
-  
-                       <Button type="submit" css={{ margin: 30 }} shadow auto>
-                            Entrar
-                        </Button>
 
-                        <Link style={{textAlign: 'center'}} to={`/register/`}>Cadastra-se</Link>
+                    <Button type="submit" css={{ margin: 30 }} shadow auto>
+                        Entrar
+                    </Button>
+
+                    <Link style={{ textAlign: 'center' }} to={`/register/`}>Cadastra-se</Link>
 
                 </form>
 

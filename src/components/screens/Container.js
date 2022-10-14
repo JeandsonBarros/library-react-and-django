@@ -4,7 +4,6 @@ import NavbarCom from '../Layouts/Navbar';
 import { getToken } from '../../services/TokenService'
 import { useEffect } from 'react';
 
-
 function Container({ children }) {
 
     const location = useLocation()

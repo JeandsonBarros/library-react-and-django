@@ -32,7 +32,16 @@ export async function register(user) {
         }
 
     } catch (error) {
-        console.log(error);
+
+        if (error.response.data.username)
+            return 'Nome de usuário invalido.'
+
+        if (error.response.data.email)
+            return 'E-mail invalido.'
+
+        if (error.response.data.password)
+            return 'Esta senha é muito comum ou possui caracteres insuficientes.'
+
         return 'Erro ao cadastrar-se'
     }
 }
@@ -40,32 +49,41 @@ export async function register(user) {
 export async function updateUser(user) {
     try {
 
-        const response = await api.patch('/auth/user/', user, 
-        {
-            headers: {
-                'Authorization': `Bearer ${getToken()}`,
-                'Content-Type': 'multipart/form-data'
-            }
-        })
+        await api.patch('/auth/user/', user,
+            {
+                headers: {
+                    'Authorization': `Bearer ${getToken()}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
 
-        return response.status
+        return "Dados atualizados com sucesso!"
 
     } catch (error) {
-        console.log(error);
-        return error.status
+
+        if (error.response.data.username)
+            return 'Nome de usuário invalido.'
+
+        if (error.response.data.email)
+            return 'E-mail invalido.'
+
+        if (error.response.data.password)
+            return 'Esta senha é muito comum ou possui caracteres insuficientes.'
+
+        return 'Erro ao atualizar'
     }
 }
 
 export async function getUser() {
     try {
 
-        const response = await api.get("/auth/user/", 
-        {
-            headers: {
-                'Authorization': `Bearer ${getToken()}`,
-                'Content-Type': 'multipart/form-data'
-            }
-        })
+        const response = await api.get("/auth/user/",
+            {
+                headers: {
+                    'Authorization': `Bearer ${getToken()}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
 
         return response.data
     } catch (error) {
@@ -77,13 +95,13 @@ export async function getUser() {
 export async function deleteUser() {
     try {
 
-        const response = await api.delete("/auth/user/", 
-        {
-            headers: {
-                'Authorization': `Bearer ${getToken()}`,
-                'Content-Type': 'multipart/form-data'
-            }
-        })
+        const response = await api.delete("/auth/user/",
+            {
+                headers: {
+                    'Authorization': `Bearer ${getToken()}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
         logout()
         return response.status
     } catch (error) {

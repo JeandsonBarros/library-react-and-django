@@ -1,12 +1,13 @@
-import ModalClient from "../../Layouts/ModalClient";
-import RemoveClient from "./RemoveClient";
-import ModalClientDetails from "../../Layouts/ModalClientDetails";
-import UpdateClient from "./UpdateClient";
-import React, { useState, useEffect } from 'react';
-import { Button, Table, Row, Input } from "@nextui-org/react";
-import { postClient, getClients } from '../../../services/ClientService'
-import Alert from '../../Layouts/Alert'
+import { Button, Input, Loading, Row, Table } from '@nextui-org/react';
+import React, { useEffect, useState } from 'react';
 import { BsPlusCircleFill, BsSearch } from 'react-icons/bs';
+
+import { getClients, postClient } from '../../../services/ClientService';
+import Alert from '../../Layouts/Alert';
+import ModalClient from '../../Layouts/ModalClient';
+import ModalClientDetails from '../../Layouts/ModalClientDetails';
+import RemoveClient from './RemoveClient';
+import UpdateClient from './UpdateClient';
 
 function Clients() {
 
@@ -17,6 +18,7 @@ function Clients() {
     const [offset, setOffset] = useState(0);
     const [msg, setMsg] = useState('')
     const [alertVisible, setAlerVisible] = useState(false)
+    const [progressVisible, setProgressVisible] = useState(false);
 
     useEffect(() => {
         listClients()
@@ -24,17 +26,22 @@ function Clients() {
 
     async function listClients(offsetValue = 0, name = '') {
 
+        setProgressVisible(true)
+
         const data = await getClients(offsetValue, name)
         setTotalClients(data.count)
 
         if (typeof (data) === 'string') {
             setMsg(data)
             setAlerVisible(true)
+            setProgressVisible(false)
 
             return
         }
 
         offsetValue === 0 ? setClients(data.results) : setClients(clients.concat(data.results))
+
+        setProgressVisible(false)
 
     }
 
@@ -82,7 +89,7 @@ function Clients() {
                     underlined
                     labelPlaceholder='Buscar cliente'
                     value={search}
-                    contentRight={<BsSearch/>}
+                    contentRight={<BsSearch />}
                     css={{ mt: 40 }}
                     onChange={event => {
                         listClients(0, event.target.value,)
@@ -139,11 +146,13 @@ function Clients() {
                                         <ModalClientDetails
                                             client={client}
                                         />
+
                                         <UpdateClient
                                             id={client.id}
                                             client={client}
                                             refresh={refresh}
                                         />
+                                        
                                         <RemoveClient
                                             id={client.id}
                                             clientName={client.name}
@@ -159,23 +168,23 @@ function Clients() {
 
                 </Table>
 
-                {(totalClients !== clients.length && totalClients > 0) && <Button
-                    auto
-                    shadow
-                    css={{
-                        m: '20px auto',
-                        p: 10,
-                        h: 60,
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}
-                    onPress={pagination}
-                >
+                {progressVisible && <Loading className='d-flex flex-row justify-content-center mt-4' indeterminated value={50} />}
 
-                    <BsPlusCircleFill style={{ fontSize: 40 }} />
 
-                </Button>}
+
+                <div className='d-flex flex-row justify-content-center mt-4'>
+                    {(totalClients !== clients.length && totalClients > 0) && <Button
+                        auto
+                        shadow
+                        css={{mb:20}}
+                        onPress={pagination}
+                    >
+
+                        <BsPlusCircleFill style={{ padding: 10, fontSize: 50 }} />
+
+                    </Button>}
+                </div>
+
             </div>
 
         </div>);

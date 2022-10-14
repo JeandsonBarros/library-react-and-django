@@ -34,11 +34,12 @@ export async function getClient(id) {
         return response.data
 
     } catch (error) {
+        console.log(error);
 
-        if (error.status === 404)
+        if (error.response.status === 404)
             alert("Cliente não encontrado")
         else
-            alert("Erro ao buscar cliente")
+            console.log("Erro ao buscar cliente")
     }
 }
 

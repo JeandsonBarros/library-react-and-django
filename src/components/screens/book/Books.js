@@ -1,13 +1,13 @@
-import { Card, Col, Text, Row, Input, Button } from '@nextui-org/react';
+import { Button, Card, Col, Input, Loading, Row, Text } from '@nextui-org/react';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { BsPlusCircleFill, BsSearch } from 'react-icons/bs';
-import { getBooks } from '../../../services/BookService';
+import { useNavigate } from 'react-router-dom';
 
+import { getBooks } from '../../../services/BookService';
+import Alert from '../../Layouts/Alert';
 import NewBook from './NewBook';
 import RemoveBook from './RemoveBook';
 import UpdateBook from './UpdateBook';
-import Alert from '../../Layouts/Alert'
 
 function Books() {
 
@@ -22,17 +22,23 @@ function Books() {
     const [totalBooks, setTotalBooks] = useState(0);
     const [offset, setOffset] = useState(0);
 
+    const [progressVisible, setProgressVisible] = useState(false);
+
+
     useEffect(() => {
         getBooksFunction()
     }, [])
 
     async function getBooksFunction(offsetValue = 0, title = '') {
 
+        setProgressVisible(true)
+
         const data = await getBooks(offsetValue, title)
 
         if (typeof (data) === 'string') {
             setMsg(data)
             setAlerVisible(true)
+            setProgressVisible(false)
 
             return
         }
@@ -40,6 +46,8 @@ function Books() {
 
         setTotalBooks(data.count)
         offsetValue === 0 ? setBooks(data.results) : setBooks(books.concat(data.results))
+
+        setProgressVisible(false)
 
     }
 
@@ -71,6 +79,8 @@ function Books() {
 
         <div style={{ display: 'flex', justifyContent: 'center', width: '100%', }} >
 
+
+
             <div style={{ margin: 10, width: '100%', }}>
 
                 <Row css={{ mb: 20 }} wrap='wrap' justify='space-between'>
@@ -84,7 +94,7 @@ function Books() {
                         width='200px'
                         underlined
                         css={{ mt: 40 }}
-                        contentRight={<BsSearch/>}
+                        contentRight={<BsSearch />}
                         labelPlaceholder='Buscar livro'
                         onChange={event => {
                             getBooksFunction(0, event.target.value)
@@ -120,7 +130,7 @@ function Books() {
                                 <Card.Body css={{ p: 10 }}>
 
                                     <Card.Image
-                                        src={book.image ? `http://127.0.0.1:8000${book.image}` : require('../../imgs/default_image.png') }
+                                        src={book.image ? `http://127.0.0.1:8000${book.image}` : require('../../imgs/default_image.png')}
                                         width="100%"
                                         height="100%"
                                         objectFit="contain"
@@ -129,9 +139,9 @@ function Books() {
 
                                     <Col>
 
-                                        <Col css={{h:100}}>
-                                            <Text css={{wordWrap: 'break-word'}}>
-                                                {book.title.length<50? book.title : book.title.slice(0, 50)+'...' }
+                                        <Col css={{ h: 100 }}>
+                                            <Text css={{ wordWrap: 'break-word' }}>
+                                                {book.title.length < 50 ? book.title : book.title.slice(0, 50) + '...'}
                                             </Text>
                                             <Text size={12} weight="bold" >
                                                 {book.author}
@@ -162,21 +172,18 @@ function Books() {
 
                 </div>
 
-                {(totalBooks !== books.length && totalBooks > 0) && <Button
-                    auto
-                    shadow
-                    css={{
-                        m: '20px auto',
-                        p: 10,
-                        h: 60,
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}
-                    onPress={paginationBook}
-                >
-                    <BsPlusCircleFill style={{ fontSize: 40 }} />
-                </Button>}
+                {progressVisible && <Loading className='d-flex flex-row justify-content-center mt-4' indeterminated value={50} />}
+
+                <div className='d-flex flex-row justify-content-center mt-4'>
+                    {(totalBooks !== books.length && totalBooks > 0) && <Button
+                        auto
+                        shadow
+                        css={{mb:20}}
+                        onPress={paginationBook}    
+                    >
+                        <BsPlusCircleFill style={{padding: 10, fontSize: 50 }} />
+                    </Button>}
+                </div>
 
             </div>
 

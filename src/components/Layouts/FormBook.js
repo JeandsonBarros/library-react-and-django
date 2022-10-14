@@ -1,11 +1,13 @@
 import '../styles/Styles.css'
-import { Button, Modal } from "@nextui-org/react";
+import { Button, Modal, Progress, Text } from "@nextui-org/react";
 import CustomInput from './CustomInput'
 import { useState } from 'react';
 
 function FormBook({ submitAction, title, visible, setVisible, bookUpdate }) {
 
     const [book, setBook] = useState(bookUpdate || {})
+    const [progressVisible, setProgressVisible] = useState(false);
+    const [alertMessage, setAlertMessage] = useState()
 
     function setValue(key, value) {
 
@@ -15,11 +17,23 @@ function FormBook({ submitAction, title, visible, setVisible, bookUpdate }) {
 
     }
 
-    function submiteFuntion(event) {
-       /*  event.preventDefault() */
+    async function submiteFuntion() {
 
-        submitAction(book)
+        const keys = ['title', 'author', 'isbn', 'synopsis']
+
+        const checks = keys.find(key => {
+            return !book[key]
+        })
+
+        if (checks)
+            return setAlertMessage("Não deixe campos vazios")
+
+        setProgressVisible(true)
+
+        await submitAction(book)
         setVisible(false)
+
+        setProgressVisible(false)
     }
 
     function file(event) {
@@ -30,75 +44,79 @@ function FormBook({ submitAction, title, visible, setVisible, bookUpdate }) {
     }
 
     return (
-        
-            <Modal
-                closeButton
-                aria-labelledby="modal-title"
-                open={visible}
-                onClose={() => setVisible(false)}
-                css={{ margin: 10 }}
-            >
-                <Modal.Header>
-                    <h3>{title} livro</h3>
-                </Modal.Header>
 
-                <Modal.Body>
+        <Modal
+            closeButton
+            aria-labelledby="modal-title"
+            open={visible}
+            onClose={() => setVisible(false)}
+            css={{ margin: 10 }}
+        >
+            <Modal.Header>
+                <h3>{title} livro</h3>
+            </Modal.Header>
 
-                    <hr/>
+            <Modal.Body>
 
-                    <CustomInput
-                        placeholder="Titulo"
-                        setValue={text => setValue('title', text)}
-                        value={book.title || ''}
+                {progressVisible && <Progress indeterminated value={50} />}
+
+                <hr />
+
+                <Text color='error'>{alertMessage}</Text>
+
+                <CustomInput
+                    placeholder="Titulo"
+                    setValue={text => setValue('title', text)}
+                    value={book.title || ''}
+                />
+
+                <CustomInput
+                    placeholder="Autor"
+                    setValue={text => setValue('author', text)}
+                    value={book.author || ''}
+                />
+
+                <CustomInput
+                    placeholder="ISBN"
+                    setValue={text => setValue('isbn', text)}
+                    type='number'
+                    value={book.isbn && book.isbn}
+                />
+
+                <CustomInput
+                    placeholder="Sinopse"
+                    setValue={text => setValue('synopsis', text)}
+                    value={book.synopsis || ''}
+                />
+
+                <div style={{ marginTop: '10px', width: '100%' }}>
+                    <label htmlFor='imageId' >Capa</label>
+                    <input
+                        id='imageId'
+                        className='form-control'
+                        type="file"
+                        onChange={file}
+
                     />
+                </div>
 
-                    <CustomInput
-                        placeholder="Autor"
-                        setValue={text => setValue('author', text)}
-                        value={book.author || ''}
-                    />
+                <hr />
 
-                    <CustomInput
-                        placeholder="ISBN"
-                        setValue={text => setValue('isbn', text)}
-                        type='number'
-                        value={book.isbn && book.isbn}
-                    />
+            </Modal.Body>
+            <Modal.Footer>
+                <Button onPress={submiteFuntion} css={{ margin: 10 }} shadow auto>{title}</Button>
+                <Button
+                    css={{ margin: 10 }}
+                    color="error"
+                    shadow
+                    auto
+                    onPress={() => setVisible(false)}
+                >
+                    Cancelar
+                </Button>
+            </Modal.Footer>
+        </Modal>
 
-                    <CustomInput
-                        placeholder="Sinopse"
-                        setValue={text => setValue('synopsis', text)}
-                        value={book.synopsis || ''}
-                    />
-
-                    <div style={{ marginTop: '10px', width: '100%' }}>
-                        <label htmlFor='imageId' >Capa</label>
-                        <input
-                            id='imageId'
-                            className='form-control'
-                            type="file"
-                            onChange={file}
-                           
-                        />
-                    </div>
-
-                    <hr/>
-
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button onPress={submiteFuntion} css={{ margin: 10 }} shadow auto>{title}</Button>
-                    <Button
-                        css={{ margin: 10 }}
-                        color="error"
-                        shadow
-                        auto
-                        onPress={() => setVisible(false)}
-                    >
-                        Cancelar
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-      
 
     );
 }

@@ -1,17 +1,16 @@
 import '../Screens.css';
 
-
-import { Button, Collapse, Input, Row, Text } from '@nextui-org/react';
+import { Button, Collapse, Input, Loading, Row, Text } from '@nextui-org/react';
 import { useEffect, useState } from 'react';
 import { BsPlusCircleFill, BsSearch } from 'react-icons/bs';
 
 import { getBook } from '../../../services/BookService';
 import { getClient } from '../../../services/ClientService';
 import { getLoans } from '../../../services/LoanService';
+import Alert from '../../Layouts/Alert';
 import ModalClientDetails from '../../Layouts/ModalClientDetails';
 import LoanUpdate from './LoanUpdate';
 import RemoveLoan from './RemoveLoan';
-import Alert from '../../Layouts/Alert';
 
 function LoanCollapse({ loan, refresh }) {
 
@@ -19,6 +18,7 @@ function LoanCollapse({ loan, refresh }) {
     const [book, setBook] = useState({})
 
     useEffect(() => {
+        console.log(loan.client);
         getClient(loan.client).then(data => setClient(data))
         getBook(loan.book).then(data => setBook(data.data))
     }, [])
@@ -49,7 +49,6 @@ function LoanCollapse({ loan, refresh }) {
 
 }
 
-
 function Loans() {
 
     const [loans, setLoans] = useState([]);
@@ -63,17 +62,22 @@ function Loans() {
 
     const [totalLoans, setTotalLoans] = useState(0);
 
+    const [progressVisible, setProgressVisible] = useState(false);
+
     useEffect(() => {
         listLoans()
     }, [])
 
     async function listLoans(offsetValue = 0, filter = 'all', title = '') {
 
+        setProgressVisible(true)
+
         let data = await getLoans(offsetValue, filter, title)
 
         if (typeof (data) === 'string') {
             setMsg(data)
             setAlerVisible(true)
+            setProgressVisible(true)
 
             return
         }
@@ -81,6 +85,7 @@ function Loans() {
         setTotalLoans(data.count)
         offsetValue === 0 ? setLoans(data.results) : setLoans(loans.concat(data.results))
 
+        setProgressVisible(false)
     }
 
     async function pagination() {
@@ -113,7 +118,7 @@ function Loans() {
 
     return (
         <div>
-            
+
             <Row wrap='wrap' justify='space-between'>
 
                 <Button.Group css={{ mt: 40 }}>
@@ -141,7 +146,7 @@ function Loans() {
                 <Input
                     underlined
                     labelPlaceholder='Busacar empréstimo'
-                    contentRight={<BsSearch/>}
+                    contentRight={<BsSearch />}
                     css={{ mt: 40 }}
                     onChange={event => {
                         listLoans(0, loansFilter, event.target.value)
@@ -151,6 +156,8 @@ function Loans() {
                 />
 
             </Row>
+
+            <hr />
 
             <Alert
                 visible={alertVisible}
@@ -173,20 +180,19 @@ function Loans() {
 
             }
 
-            {(totalLoans !== loans.length && totalLoans > 0) &&
-                <Button
-                    shadow
-                    auto
-                    css={{
-                        m: '20px auto',
-                        p: 10,
-                        h: 60,
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}
-                    onPress={pagination}
-                >  <BsPlusCircleFill style={{fontSize: 40}} />  </Button>}
+            {progressVisible && <Loading className='d-flex flex-row justify-content-center mt-4' indeterminated value={50} />}
+
+            <div className='d-flex flex-row justify-content-center mt-4'>
+                {(totalLoans !== loans.length && totalLoans > 0) &&
+                    <Button
+                        shadow
+                        auto
+                        css={{mb:20}}
+                        onPress={pagination}
+                    >
+                        <BsPlusCircleFill style={{ padding: 10, fontSize: 50 }} />
+                    </Button>}
+            </div>
 
         </div>);
 }

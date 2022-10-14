@@ -1,5 +1,5 @@
 import '../styles/Styles.css'
-import { Button, Modal, Input } from "@nextui-org/react";
+import { Button, Modal, Progress, Text } from "@nextui-org/react";
 import CustomInput from './CustomInput';
 import DateInput from './DateInput';
 import { useState } from 'react';
@@ -7,6 +7,8 @@ import { useState } from 'react';
 function ModalClient({ submitAction, title, visible, setVisible, clientUpdate }) {
 
     const [client, setClient] = useState(clientUpdate || {})
+    const [progressVisible, setProgressVisible] = useState(false);
+    const [alertMessage, setAlertMessage] = useState()
 
     function setValue(key, value) {
 
@@ -16,15 +18,33 @@ function ModalClient({ submitAction, title, visible, setVisible, clientUpdate })
 
     }
 
-    async function submiteFuntion(event) {
-        /*  event.preventDefault() */
+    async function submiteFuntion() {
+
+        const keys = [
+            'name',
+            'CPF',
+            'profession',
+            'address',
+            'telephone',
+            'birthDate',
+        ]
+
+        const checks = keys.find(key => {
+            return !client[key]
+        })
+
+        if (checks)
+            return setAlertMessage("Não deixe campos vazios")
+
+        setProgressVisible(true)
 
         await submitAction(client)
         setVisible(false)
+
+        setProgressVisible(false)
     }
 
     return (
-
 
         <Modal
             blur
@@ -40,7 +60,11 @@ function ModalClient({ submitAction, title, visible, setVisible, clientUpdate })
 
             <Modal.Body>
 
+                {progressVisible && <Progress indeterminated value={50} />}
+
                 <hr />
+
+                <Text color='error'>{alertMessage}</Text>
 
                 <CustomInput
                     placeholder="Nome"

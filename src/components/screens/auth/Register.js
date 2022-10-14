@@ -3,9 +3,10 @@ import { register } from '../../../services/AuthService'
 import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
 import '../../styles/Styles.css'
-import { Button, Text, Card, } from '@nextui-org/react';
+import { Button, Text, Card, Loading, } from '@nextui-org/react';
 import CustomInput from '../../Layouts/CustomInput';
 import InputPassword from '../../Layouts/InputPassword';
+import Alert from '../../Layouts/Alert';
 
 function Register() {
 
@@ -14,6 +15,7 @@ function Register() {
     const [user, setUser] = useState({})
     const [passwordConfirmAlert, setPasswordConfirmAlert] = useState('')
     const [passwordConfirm, setPasswordConfirm] = useState('')
+    const [loadingVisible, setLoadingVisible] = useState(false);
 
     function setUserValue(key, value) {
 
@@ -35,9 +37,14 @@ function Register() {
         if (checks)
             return setAlertMessage("Não deixe campos vazios")
 
+        if (user.password.length < 8)
+            return setAlertMessage("Senha deve ter mais de 8 caracteres ou mais")
+
         if (user.password !== passwordConfirm) {
             return setPasswordConfirmAlert('Senha não corresponde')
         }
+
+        setLoadingVisible(true)
 
         const data = await register(user)
 
@@ -45,20 +52,32 @@ function Register() {
             navigate('/')
         else
             setAlertMessage(data)
+
+        setLoadingVisible(false)
     }
 
     return (
         <div className='centerItems'>
 
-            {alertMessage && <Card css={{ mt: 10 }}>
+            <Alert
+                text={alertMessage}
+                visible={alertMessage}
+                setVisible={()=>{
+                    setAlertMessage('')
+                }}
+            />
+
+           {/*  {alertMessage && <Card css={{ mt: 10 }}>
                 <Card.Body>
                     <Text color='error' size={20} > {alertMessage} </Text>
                 </Card.Body>
             </Card>}
-
+ */}
             <form onSubmit={registerSubmit} className="formRegister">
 
                 <h1>Cadastro</h1>
+
+                {loadingVisible && <Loading />}
 
                 <div className='inputs'>
 

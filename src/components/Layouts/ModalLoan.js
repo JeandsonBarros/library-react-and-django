@@ -1,4 +1,4 @@
-import { Modal, Text, Checkbox, Radio, Button, Input } from "@nextui-org/react";
+import { Modal, Text, Checkbox, Radio, Button, Input, Progress, Loading } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { getClients, getClient } from "../../services/ClientService";
 import CustomInput from "./CustomInput";
@@ -12,6 +12,9 @@ function ModalLoan({ title, visible, setVisible, actionSubmit, loanUpdate }) {
     const [search, setSearch] = useState('')
     const [totalClients, setTotalClients] = useState(0);
     const [offset, setOffset] = useState(0);
+    const [progressVisible, setProgressVisible] = useState(false);
+    const [loadingVisible, setLoadingVisible] = useState(false);
+    const [alert, setAlert] = useState('');
 
     useEffect(() => {
         if (loanUpdate)
@@ -29,19 +32,35 @@ function ModalLoan({ title, visible, setVisible, actionSubmit, loanUpdate }) {
     }
 
     async function submit() {
+
+        if (!loan.client)
+            return setAlert('Informe o cliente')
+
+        if (!loan.value)
+            return setAlert('Informe o valor')
+
+        if (!loan.returnDate)
+            return setAlert('Informe a data de retorno')
+
+        setProgressVisible(true)
+
         await actionSubmit(loan)
+
+        setProgressVisible(false)
     }
 
     async function listClients(offsetValue = 0, name = '') {
+
+        setLoadingVisible(true)
 
         const data = await getClients(offsetValue, name)
         setTotalClients(data.count)
 
         offsetValue === 0 ? setClients(data.results) : setClients(clients.concat(data.results))
 
-    }
+        setLoadingVisible(false)
 
-    
+    }
 
     async function pagination() {
 
@@ -49,7 +68,6 @@ function ModalLoan({ title, visible, setVisible, actionSubmit, loanUpdate }) {
         setOffset(offset + 10)
 
     }
-
 
     return (
         <Modal
@@ -69,13 +87,17 @@ function ModalLoan({ title, visible, setVisible, actionSubmit, loanUpdate }) {
 
             <Modal.Body>
 
+                {progressVisible && <Progress indeterminated value={50} />}
+
                 <hr />
+
+                <Text color="error">{alert}</Text>
 
                 <Input
                     underlined
                     labelPlaceholder="Buscar cliente"
                     value={search}
-                    contentRight={<BsSearch/>}
+                    contentRight={<BsSearch />}
                     onChange={event => {
                         listClients(0, event.target.value,)
                         setSearch(event.target.value)
@@ -118,6 +140,9 @@ function ModalLoan({ title, visible, setVisible, actionSubmit, loanUpdate }) {
                                         })
                                     }
                                 </Radio.Group>
+
+                                {loadingVisible && <Loading className='d-flex flex-row justify-content-center mt-4' indeterminated value={50} />}
+
                                 {totalClients !== clients.length && <Button
                                     auto
                                     light

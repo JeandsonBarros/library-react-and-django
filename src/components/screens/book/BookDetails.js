@@ -1,6 +1,6 @@
 import '../Screens.css';
 
-import { Collapse, Image, Row, Text } from '@nextui-org/react';
+import { Collapse, Image, Progress, Row, Text } from '@nextui-org/react';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -56,6 +56,7 @@ function BookDetails() {
 
     const [msg, setMsg] = useState('')
     const [alertVisible, setAlerVisible] = useState(false)
+    const [progressVisible, setProgressVisible] = useState(false);
 
     const navigate = useNavigate()
 
@@ -65,10 +66,14 @@ function BookDetails() {
 
     async function get(offsetValue = 0) {
 
+        setProgressVisible(true)
+
         const responseBook = await getBook(params.id)
 
-        if (responseBook.status !== 200)
+        if (responseBook.status !== 200){
+            setProgressVisible(false)
             return navigate("*")
+        }
 
         const responseLoansReturned = await getLoansByBook(offsetValue, responseBook.data.id, 'true')
         const responseLoansNoReturned = await getLoansByBook(offsetValue, responseBook.data.id, 'false')
@@ -78,6 +83,7 @@ function BookDetails() {
         setLoansReturned(responseLoansReturned.results)
         setLoansNoReturned(responseLoansNoReturned.results)
 
+        setProgressVisible(false)
 
     }
 
@@ -98,6 +104,8 @@ function BookDetails() {
     return (
         <div >
 
+            {progressVisible && <Progress indeterminated value={50} />}
+
             <Alert
                 visible={alertVisible}
                 setVisible={setAlerVisible}
@@ -117,7 +125,7 @@ function BookDetails() {
 
                 <div className='bookDetails'>
 
-                    <Text h2 css={{wordWrap: 'break-word'}} >{book.title}</Text>
+                    <Text h2 css={{ wordWrap: 'break-word' }} >{book.title}</Text>
                     <Text size={23}> Autor: {book.author}</Text>
                     <Text >ISBN: {book.isbn}</Text>
                     <Text css={{ wordBreak: 'break-all' }} blockquote >Sinopse: "{book.synopsis}"</Text>

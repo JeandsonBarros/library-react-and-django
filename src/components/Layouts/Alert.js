@@ -3,7 +3,7 @@ import { Button, Card, Row, Text } from "@nextui-org/react";
 function Alert({visible, setVisible, text}) {
     return (
         <>
-            {visible > 0 && <Card css={{ mt: 10 }}>
+            {visible && <Card css={{ mt: 10 }}>
                 <Card.Body>
                     <Row
                      justify='space-between' wrap='wrap' align='center'>
@@ -16,7 +16,9 @@ function Alert({visible, setVisible, text}) {
                             flat
                             auto
                             onPress={() => setVisible(false)}
-                        >X</Button>
+                        >
+                            X
+                        </Button>
                     </Row>
                 </Card.Body>
             </Card>}

@@ -3,26 +3,40 @@ import { updateUser, getUser, deleteUser } from '../../../services/AuthService'
 import { useNavigate } from 'react-router-dom';
 import ModalConfirm from '../../Layouts/ModalConfirm';
 import '../../styles/Styles.css'
-import { Button, Text, Card, Collapse, Row } from '@nextui-org/react';
+import { Button, Text, Collapse, Row, Progress, Loading } from '@nextui-org/react';
 import CustomInput from '../../Layouts/CustomInput';
 import InputPassword from '../../Layouts/InputPassword';
+import Alert from '../../Layouts/Alert';
 
 function UserConfig() {
 
     const navigate = useNavigate()
     const [confirmModalVisible, setConfirmModalVisible] = useState(false)
 
-    const [alertMessage, setAlertMessage] = useState()
+    const [alertMessage, setAlertMessage] = useState('')
+    const [alertVisible, setAlertVisible] = useState(false)
 
     const [user, setUser] = useState()
 
     const [passwordConfirmAlert, setPasswordConfirmAlert] = useState('')
     const [passwordConfirm, setPasswordConfirm] = useState('')
     const [password, setPassword] = useState('')
+    const [progressVisible, setProgressVisible] = useState(false);
 
     useEffect(() => {
-        getUser().then(data => setUser(data))
+        getUserData()
     }, [])
+
+    async function getUserData() {
+
+        setProgressVisible(true)
+
+        const data = await getUser()
+        setUser(data)
+
+        setProgressVisible(false)
+
+    }
 
     async function userEdit(event) {
         event.preventDefault()
@@ -33,14 +47,19 @@ function UserConfig() {
             return !user[key]
         })
 
-        if (checks)
-            return setAlertMessage({ text: "Não deixe campos vazios!", status: 500 })
+        if (checks) {
+            setAlertVisible(true)
+            return setAlertMessage("Não deixe campos vazios!")
+        }
+
+        setProgressVisible(true)
 
         const data = await updateUser(user)
-        if (data === 200)
-            setAlertMessage({ text: "Dados atualizados com sucesso!", status: 200 })
-        else
-            setAlertMessage({ text: "Erro ao atualizar dados!", status: 500 })
+
+        setAlertVisible(true)
+        setAlertMessage(data)
+
+        setProgressVisible(false)
     }
 
     function setUserValue(key, value) {
@@ -62,22 +81,27 @@ function UserConfig() {
             return setPasswordConfirmAlert({ text: 'Senhas não correspondem', status: 'error' })
         }
 
+        setProgressVisible(true)
+
         const data = await updateUser({ password })
-        if (data === 200)
+        if (data === "Dados atualizados com sucesso!")
             setPasswordConfirmAlert({ text: "Senha atualizada com sucesso!", status: 'success' })
         else
-            setPasswordConfirmAlert({ text: "Erro ao atualizar senha!", status: 'error' })
+            setPasswordConfirmAlert({ text: data, status: 'error' })
 
+        setProgressVisible(false)
     }
 
     async function deleteAccount() {
-        console.log('deletar');
+
         const data = await deleteUser()
 
         if (data === 204)
             navigate('/login/')
-        else
-            setAlertMessage({ text: "Erro ao deletar conta!", status: 500 })
+        else {
+            setAlertVisible(true)
+            setAlertMessage("Erro ao deletar conta!")
+        }
 
     }
 
@@ -128,17 +152,13 @@ function UserConfig() {
     return (
         <section className='centerItems'>
 
-            {alertMessage && <Card css={{ mt: 10 }}>
-                <Card.Body >
-                    <Text
-                        size={20}
-                        color={alertMessage.status === 200 ? 'green' : 'error'} >
+            {progressVisible && <Progress indeterminated value={50} />}
 
-                        {alertMessage.text}
-
-                    </Text>
-                </Card.Body>
-            </Card>}
+            <Alert
+                visible={alertVisible}
+                setVisible={setAlertVisible}
+                text={alertMessage}
+            />
 
             {formUser()}
 
@@ -147,6 +167,8 @@ function UserConfig() {
                 <form onSubmit={passwordUpdate}>
 
                     <Text color={passwordConfirmAlert.status} >{passwordConfirmAlert.text}</Text>
+
+                    {progressVisible && <Loading className='d-flex flex-row justify-content-center mt-4' indeterminated value={50} />}
 
                     <InputPassword
                         setValue={text => setPassword(text)}

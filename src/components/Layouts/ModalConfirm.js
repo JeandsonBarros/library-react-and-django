@@ -1,10 +1,18 @@
-import { Button, Text, Modal } from "@nextui-org/react";
+import { Button, Text, Modal, Progress } from "@nextui-org/react";
+import React, { useState } from 'react';
 
 export default function ModalConfirm({ title, message, visible, setVisible, action }) {
 
+    const [progressVisible, setProgressVisible] = useState(false);
+
     async function execultAction() {
+
+        setProgressVisible(true)
+
         await action()
         setVisible(false)
+
+        setProgressVisible(false)
     }
 
     return (
@@ -23,6 +31,8 @@ export default function ModalConfirm({ title, message, visible, setVisible, acti
             </Modal.Header>
 
             <Modal.Body>
+
+                {progressVisible && <Progress indeterminated value={50} />}
 
                 <Text> {message} </Text>
 
